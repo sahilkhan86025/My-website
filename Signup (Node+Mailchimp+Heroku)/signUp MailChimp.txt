@@ -1,0 +1,44 @@
+// API key c4ef17e2ae0c82a9f8394a0759b2c8ba-us20
+// Audience Id 21c813b674.
+// API url https://<dc>.api.mailchimp.com/3.0/
+// my url="https://us20.api.mailchimp.com/3.0/lists/21c813b674"
+
+
+app.post("/", function(req,res){
+const firstName = req.body.fName;
+const lastName = req.body.lName;
+const email = req.body.email;
+
+const data = {
+ members:[
+   {
+     email_address: email,
+     status: "subscribed",
+     merge_fields:{
+       FNAME: firstName,
+       LNAME: lastName
+     }
+   }
+ ]
+};
+
+const jasonData = JSON.stringify(data);
+
+const url="https://us20.api.mailchimp.com/3.0/lists/21c813b674";
+const options = {
+  method: 'POST',
+  auth: "sahil:c4ef17e2ae0c82a9f8394a0759b2c8ba-us20"
+}
+
+const request = https.request(url, options, function(response){
+
+response.on("data", function(data){
+  console.log(JSON.parse(data));
+})
+
+})
+
+request.write(jasonData);
+request.end();
+
+})
